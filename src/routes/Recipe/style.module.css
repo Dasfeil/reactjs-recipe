@@ -1,0 +1,38 @@
+.dFlex {
+    display: flex;
+    justify-content:space-between;
+    width: 90%;
+}
+
+.rightDiv {
+    width: 55%;
+}
+
+.leftDiv {
+    width: 40%;
+}
+.container {
+    width: 100vw;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+.previewImage {
+    max-width: 500px;
+    max-height: 500px;
+    min-width: 200px;
+    height: auto;
+}
+
+.rcpButton {
+    text-transform: none;
+}
+
+.d4 {
+    width: 60%;
+}
+
+.d1 {
+    width: 15%;
+}

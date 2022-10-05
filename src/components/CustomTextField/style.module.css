@@ -1,0 +1,30 @@
+.Error {
+    color: red;
+}
+
+.Input {
+    display: flex;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.Input input {
+    padding: 0;
+}
+
+.container {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.container::before {
+    content: attr(data-content);
+    position: absolute;
+    bottom: -30px;
+    line-height: 30px;
+    left: 0;
+    width: auto;
+    white-space: nowrap;
+    height: 30px;
+    color: red;
+}
