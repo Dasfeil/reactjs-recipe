@@ -1,0 +1,21 @@
+.dFlex {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.previewImage {
+    max-width: 500px;
+    max-height: 500px;
+    min-width: 100px;
+    width: auto;
+    height: auto;
+}
+
+.d4 {
+    width: 60%;
+}
+
+.d1 {
+    width: 15%;
+}

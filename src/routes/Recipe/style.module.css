@@ -1,9 +1,3 @@
-.dFlex {
-    display: flex;
-    justify-content:space-between;
-    width: 90%;
-}
-
 .rightDiv {
     width: 55%;
 }
@@ -18,15 +12,65 @@
     justify-content: space-around;
 }
 
+.rContainer {
+    width: 90%;
+    max-height: 70px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid rgb(196, 177, 177);
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+.rLink {
+    text-decoration: none;
+}
+
+.rActive {
+    color: white;
+}
+.rActive div {
+    background-color: rgb(127, 127, 209);
+}
+
+.rTextContainer {
+    display: flex;
+    max-width: 80%;
+    flex-direction: column;
+    height: auto;
+}
+
+.rTextContainer h2, p {
+    width: 100%;
+    padding: 0px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rTextContainer p {
+    margin: 2px 0 0 0;
+}
+
+.rImageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.rContainer img {
+    max-width: 100px;
+    max-height: 65px;
+    width: auto;
+    height: auto;
+}
+
 .previewImage {
     max-width: 500px;
     max-height: 500px;
     min-width: 200px;
     height: auto;
-}
-
-.rcpButton {
-    text-transform: none;
 }
 
 .d4 {

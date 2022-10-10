@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
 import Recipe from './routes/Recipe'
+import NoMatch from './components/NoMatch'
+import shopList from './routes/ShopList';
 
 function App() {
   return (
@@ -14,11 +16,14 @@ function App() {
       <Switch>
         <Route path="/recipe" component={Recipe}>
         </Route>
-        <Route path="/shop">
+        <Route path="/shop" component={shopList}>
         </Route>
         <Route exact path="/" render={() => (
           <Redirect to="/recipe"/>
         )}>
+        </Route>
+        <Route path="*">
+          <NoMatch/>
         </Route>
       </Switch>
     </div>

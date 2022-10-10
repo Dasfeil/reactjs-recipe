@@ -1,0 +1,18 @@
+.ingContainer {
+    border: 1px solid rgb(182, 182, 182);
+    border-radius: 5px;
+}
+
+.ingredient {
+    border-bottom: 1px solid rgb(182, 182, 182);
+    padding: 10px;
+}
+
+.ingContainer *:last-child {
+    border: none
+}
+
+.rImage {
+    max-width: 40%;
+    height: auto;
+}

@@ -45,3 +45,7 @@ nav {
 .banner {
   font-size: large;
 }
+
+.noTextTransform {
+  text-transform: none;
+}

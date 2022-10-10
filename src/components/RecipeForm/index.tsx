@@ -1,65 +1,88 @@
-import React, {useState, useCallback} from 'react'
-import { Formik, Form, FormikProps, FieldArray} from 'formik'
+import React, {useState, useCallback, useEffect} from 'react'
+import { Formik, Form, FormikProps, FieldArray } from 'formik'
 import { Button, ButtonGroup } from '@mui/material'
 import style from './style.module.css'
-import CustomTextField from '../../components/CustomTextField'
+import CustomTextField from '../CustomTextField'
 import { debounce } from 'lodash'
 import * as Yup from 'yup'
-import Divider from '../../components/Divider'
+import Divider from '../Divider'
 import Ingredient from '../../interfaces/Ingredient'
 import Recipe from '../../interfaces/Recipe'
 
-const FormikForm = () => {
-  const [valid, setValid] = useState(false)
+interface fProps {
+    handleSubmit: Function,
+    goBack: Function,
+    initial?: Recipe
+}
+
+const RecipeForm = ({handleSubmit, goBack, initial}: fProps) => {
+    const [valid, setValid] = useState(false)
+    useEffect(() => {
+        if (initial) {
+            setValid(true)
+        }
+    }, [initial])
     
-    function isImage(url: string) {
+    async function isImage(url: string, props: FormikProps<Recipe>) {
         let i = new Image()
         i.src = url
-        i.onload = () => setValid(true)
-        i.onerror = () => setValid(false)
+        await new Promise((resolve) => {
+            i.onload = () => {
+                setValid(true)
+                resolve(true)
+            }
+            i.onerror = () => {
+                setValid(false)
+                resolve(false)
+            }
+        })
+        setTimeout(() => {props.validateField('imageUrl')})
     }
 
-    const handler = useCallback(debounce(isImage, 2000), [])
+    const handler = useCallback(debounce(isImage, 1000), [])
 
     const YupSchema = Yup.object().shape({
         name: Yup.string()
         .required('Required'),
         imageUrl: Yup.string()
-        .required('Required'),
+        .required('Required')
+        .test('valid-url', 'Invalid URL', () => valid),
         desc: Yup.string()
         .required('Required'),
         ingredients: Yup.array(Yup.object().shape({
             name: Yup.string()
             .required('Required'),
             qty: Yup.number()
+            .typeError('Quantity must be a number')
             .positive('Must be positive')
             .required('Required')
         })).optional()
     })
 
     return (
-        <div className={style.container}>
+        <div>
             <Formik 
-            initialValues={{
+            initialValues={initial? initial : {
                 name: '',
                 imageUrl: '',
                 desc: '',
                 ingredients: new Array<Ingredient>()
             }}
             validationSchema={YupSchema}
-            onSubmit={(values) => {console.log(values)}}>
+            onSubmit={(values) => {handleSubmit(values)}}>
                 {(props: FormikProps<Recipe>) => (
                     <Form>
                         <ButtonGroup>
                             <Button type='submit' variant='contained' color='success' 
-                            disabled={!(valid && !props.errors.desc && !props.errors.imageUrl && !props.errors.ingredients && !props.errors.name)} 
-                            className={style.rcpButton}>Save</Button>
-                            <Button variant='contained' color='error' className={style.rcpButton}>Cancel</Button>
+                            disabled={!(valid && props.isValid)} 
+                            className='noTextTransform'>Save</Button>
+                            <Button variant='contained' color='error' className='noTextTransform'
+                            onClick={() => goBack()}>Cancel</Button>
                         </ButtonGroup>
                         <CustomTextField name='name' type='text' label='Name' row={1}/>
-                        <CustomTextField name='imageUrl' type='text' label='Image URL' row={1} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                        <CustomTextField name='imageUrl' type='text' label='Image URL' row={1} onChange={async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
                             setValid(false)
-                            handler(e.target.value)
+                            handler(e.target.value, props)
                             props.handleChange(e)
                             }}/>
                         {valid && <img src={props.values.imageUrl} alt="Preview" className={style.previewImage}/>}
@@ -71,10 +94,15 @@ const FormikForm = () => {
                                     props.values.ingredients.map((i : Ingredient, index : number) => (
                                         <div key={index} className={style.dFlex}>
                                             <div className={style.d4}>
-                                                <CustomTextField name={`ingredients.${index}.name`} type='text' row={1}/>
+                                                <CustomTextField name={`ingredients.${index}.name`} type='text'/>
                                             </div>
                                             <div className={style.d1}>
-                                                <CustomTextField name={`ingredients.${index}.qty`} type='number'/>
+                                                <CustomTextField name={`ingredients.${index}.qty`} type='text'
+                                                onChange={(e : React.ChangeEvent<HTMLTextAreaElement>) => {
+                                                    props.setFieldValue(
+                                                        `ingredients.${index}.qty`,
+                                                        parseInt(e.target.value))
+                                                }}/>
                                             </div>
                                             <Button type='button' variant='contained' color='error'
                                             sx={{
@@ -89,7 +117,7 @@ const FormikForm = () => {
                                         </div>
                                     ))}
                                 <Divider color='whitesmoke'/>
-                                <Button variant='contained' color='success' className={style.rcpButton} 
+                                <Button variant='contained' color='success' className='noTextTransform'
                                 onClick={() => push({name: '', qty: 1})}>Add Ingredients</Button>
                                 </div>
                             )}
@@ -101,4 +129,4 @@ const FormikForm = () => {
     )
 }
 
-export default FormikForm
+export default RecipeForm

@@ -1,0 +1,18 @@
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+.listingContainer {
+    border: 1px solid rgb(182, 182, 182);
+    border-radius: 5px;
+}
+
+.ingredient {
+    border-bottom: 1px solid rgb(182, 182, 182);
+    padding: 10px;
+}
+
+.listingContainer *:last-child {
+    border: none
+}

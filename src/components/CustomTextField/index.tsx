@@ -12,9 +12,9 @@ interface CTFProps {
 }
 
 const CustomTextField = ({label, row, ...props}: CTFProps ) => {
-    const [field, meta, helpers] = useField(props)
+    const [field, meta] = useField(props)
     return (
-        <div className={style.container} data-content={meta.error}>
+        <div className={style.container} data-content={meta.touched? meta.error : ''}>
             {label && <label htmlFor={label}>
                 {label}
             </label>}

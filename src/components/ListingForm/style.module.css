@@ -1,0 +1,13 @@
+.formContainer {
+    width: 53%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nameField {
+    width: 75%;
+}
+
+.amountField {
+    width: 20%;
+}
