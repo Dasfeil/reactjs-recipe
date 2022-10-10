@@ -52,7 +52,7 @@ const RMenu = ({recipe, index}: Prop) => {
                 disableElevation
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon/>}
-                className='noTextTransform'
+                className={style.noTextTransform}
                 >
                     Manage Recipe
                 </Button>
