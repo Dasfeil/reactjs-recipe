@@ -24,6 +24,12 @@ const RecipeForm = ({handleSubmit, goBack, initial}: fProps) => {
     }, [initial])
     
     async function isImage(url: string, props: FormikProps<Recipe>) {
+        try {
+            new URL(url)
+        }
+        catch {
+            return false
+        }
         let i = new Image()
         i.src = url
         await new Promise((resolve) => {
@@ -46,7 +52,8 @@ const RecipeForm = ({handleSubmit, goBack, initial}: fProps) => {
         .required('Required'),
         imageUrl: Yup.string()
         .required('Required')
-        .test('valid-url', 'Invalid URL', () => valid),
+        .url('Invalid URL')
+        .test('valid-url', 'Invalid Image URL', () => valid),
         desc: Yup.string()
         .required('Required'),
         ingredients: Yup.array(Yup.object().shape({
@@ -80,11 +87,11 @@ const RecipeForm = ({handleSubmit, goBack, initial}: fProps) => {
                             onClick={() => goBack()}>Cancel</Button>
                         </ButtonGroup>
                         <CustomTextField name='name' type='text' label='Name' row={1}/>
-                        <CustomTextField name='imageUrl' type='text' label='Image URL' row={1} onChange={async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                        <CustomTextField name='imageUrl' type='url' label='Image URL' row={1} onChange={async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
                             setValid(false)
                             handler(e.target.value, props)
                             props.handleChange(e)
-                            }}/>
+                        }}/>
                         {valid && <img src={props.values.imageUrl} alt="Preview" className={style.previewImage}/>}
                         <CustomTextField name='desc' type='text' label='Description' row={5}/>
                         <FieldArray name="ingredients">
